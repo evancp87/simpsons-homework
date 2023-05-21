@@ -9,34 +9,39 @@ class App extends Component {
 
   async componentDidMount() {
     const { data } = await axios.get(
-      `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
+      `https://thesimpsonsquoteapi.glitch.me/quotes?count=10`
     );
     this.setState({ simpsons: data });
   }
 
   onDeleteChar = (character) => {
-    const { simpsons } = this.state;
+    const { simpsons, likes } = this.state;
     const charToDelete = simpsons.findIndex(
       (char) => char.character === character
     );
     const filteredData = simpsons.filter(
       (char) => char !== simpsons[charToDelete]
     );
+    const updatedLikes = { ...likes };
 
-    this.setState({ simpsons: filteredData });
+    // handles updating the likes count when a character is deleted, checks to see if the like exist and then removes it and the character from state
+    if (updatedLikes.hasOwnProperty(character)) {
+      const { [character]: deletedCharacter, ...remainingLikes } = updatedLikes;
+      this.setState({ simpsons: filteredData, likes: remainingLikes });
+    } else {
+      this.setState({ simpsons: filteredData });
+    }
   };
 
   updatedLikes = (character) => {
     const { likes } = this.state;
 
-    //  checks if character has been liked and doesn't update if so
-    if (likes[character]) {
-      return;
-    }
-
     const newLikes = { ...likes };
-    newLikes[character] = (likes[character] || 0) + 1;
 
+    // handles toggling of count based on like/unlike state
+    likes[character]
+      ? (newLikes[character] = (likes[character] || 0) + 1)
+      : (newLikes[character] = (likes[character] || 0) - 1);
     this.setState({ likes: newLikes });
   };
 
