@@ -8,10 +8,14 @@ class App extends Component {
   state = { likes: {} };
 
   async componentDidMount() {
-    const { data } = await axios.get(
-      `https://thesimpsonsquoteapi.glitch.me/quotes?count=10`
-    );
-    this.setState({ simpsons: data });
+    try {
+      const { data } = await axios.get(
+        `https://thesimpsonsquoteapi.glitch.me/quotes?count=10`
+      );
+      this.setState({ simpsons: data });
+    } catch (error) {
+      console.log("The error is:", error);
+    }
   }
 
   onDeleteChar = (character) => {
@@ -45,6 +49,49 @@ class App extends Component {
     this.setState({ likes: newLikes });
   };
 
+  searchSimpsonsInput = (e) => {
+    console.log(e.target.value);
+
+    this.setState({ searchInput: e.target.value });
+  };
+
+  sortSimpsons = (e) => {
+    console.log(e.target.value);
+
+    this.setState({ sortInput: e.target.value });
+  };
+
+  filteredSimpsons = () => {
+    const { simpsons, likes, searchInput, sortInput } = this.state;
+
+    let filteredList = [...simpsons];
+    // if a search query is entered, filter the  state and return the character that equals the query
+    if (searchInput) {
+      filteredList = filteredList.filter((item) =>
+        item.character.toLowerCase().includes(searchInput.toLowerCase())
+      );
+    }
+
+    if (sortInput === "Asc") {
+      filteredList.sort((numOne, numTwo) =>
+        numOne.character > numTwo.character ? 1 : -1
+      );
+    } else if (sortInput === "Desc") {
+      filteredList.sort((numOne, numTwo) =>
+        numOne.character > numTwo.character ? -1 : 1
+      );
+    }
+
+    return filteredList;
+  };
+
+  resetFilters = () => {
+    const { sortInput, searchInput, simpsons } = this.state;
+    console.log("hi");
+
+    this.setState({ sortInput: "", searchInput: "" });
+  };
+
   render() {
     const { simpsons, likes } = this.state;
 
@@ -52,14 +99,22 @@ class App extends Component {
       (like) => like
     ).length;
     if (!simpsons) return <Loading />;
+
+    if (simpsons.length === 0)
+      return <p>Doh! You ran out of Springfieldians!</p>;
+
+    const filteredSimpsonsData = this.filteredSimpsons();
     return (
       <>
         <h1>Total no of liked chars: {totalLikeCharacters}</h1>
         <Simpsons
-          simpsons={simpsons}
+          simpsons={filteredSimpsonsData}
           onDeleteChar={this.onDeleteChar}
           likes={likes}
           updatedLikes={this.updatedLikes}
+          searchSimpsonsInput={this.searchSimpsonsInput}
+          sortSimpsons={this.sortSimpsons}
+          resetFilters={this.resetFilters}
         />
       </>
     );
