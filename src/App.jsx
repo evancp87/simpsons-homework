@@ -65,13 +65,13 @@ class App extends Component {
     const { simpsons, likes, searchInput, sortInput } = this.state;
 
     let filteredList = [...simpsons];
-    // if a search query is entered, filter the  state and return the character that equals the query
+    // if a search query is entered, filter the  state and return the character that is in the query
     if (searchInput) {
       filteredList = filteredList.filter((item) =>
         item.character.toLowerCase().includes(searchInput.toLowerCase())
       );
     }
-
+    // sorting alphabetically ascending or descending
     if (sortInput === "Asc") {
       filteredList.sort((numOne, numTwo) =>
         numOne.character > numTwo.character ? 1 : -1
@@ -98,6 +98,7 @@ class App extends Component {
     const totalLikeCharacters = Object.values(likes).filter(
       (like) => like
     ).length;
+
     if (!simpsons) return <Loading />;
 
     if (simpsons.length === 0)
