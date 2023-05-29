@@ -9,7 +9,6 @@ export default function likesReducer(state = {}, action) {
       return { ...state, updateLikes: action.payload };
 
     default:
-      console.log("Reducer started or INVALID reducer type, probably a typo");
       return state;
   }
 }

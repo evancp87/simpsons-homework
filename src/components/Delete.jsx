@@ -6,7 +6,7 @@ class Delete extends Component {
 
     return (
       <div>
-        <button onClick={onDeleteChar}>Delete</button>
+        <button onClick={() => onDeleteChar(character)}>Delete</button>
       </div>
     );
   }

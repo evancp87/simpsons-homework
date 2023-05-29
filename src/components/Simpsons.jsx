@@ -12,7 +12,14 @@ import {
 
 class Simpsons extends Component {
   filteredSimpsons = () => {
-    const { simpsons, likes, searchInput, sortInput } = this.props;
+    const {
+      simpsons,
+      likes,
+      searchInput,
+      sortInput,
+      deleteChar,
+      deletedCharacters,
+    } = this.props;
     let filteredList = [...simpsons];
     // if a search query is entered, filter the  state and return the character that is in the query
     if (searchInput) {
@@ -31,12 +38,23 @@ class Simpsons extends Component {
       );
     }
 
+    // attempt to rerender filteredlist based on whether a character has been deleted
+    // if (deleteChar && deleteChar.length > 0) {
+    //   filteredList = [...deleteChar];
+    // }
+    // another attempt to conditionally rerender when character deleted- currently deletes evrything else but character clicked
+    if (deleteChar && deleteChar.length > 0) {
+      filteredList = filteredList.filter(
+        (item) =>
+          !deleteChar.some((deleted) => deleted.character === item.character)
+      );
+    }
+
     return filteredList;
   };
 
   onDeleteChar = (character) => {
     const { simpsons, likes } = this.props;
-    console.log(simpsons);
     const charToDelete = simpsons.findIndex(
       (char) => char.character === character
     );
@@ -53,8 +71,7 @@ class Simpsons extends Component {
     //   this.setState({ simpsons: filteredData });
     // }
     // this.props.deleteCharacter(filteredData);
-    return filteredData;
-    // this.props.deleteCharacter(filteredData);
+    this.props.deleteCharacter(filteredData);
   };
 
   render() {
@@ -62,7 +79,6 @@ class Simpsons extends Component {
 
     const {
       // onDeleteChar,
-
       resetFilters,
       searchInput,
       sortInput,
@@ -96,9 +112,7 @@ function mapStateToProps(state) {
   return {
     sortInput: state.filtersReducer.sortInput,
     searchInput: state.filtersReducer.searchInput,
-
-    // filterSimpsons: state.filterSimpsons,
-    delete: state.deleteReducer.delete,
+    deleteChar: state.deleteReducer.delete,
     simpsons: state.apiReducer.simpsons,
   };
 }
@@ -109,7 +123,6 @@ const mapDispatchToProps = (dispatch) => {
       setSimpsonsInput,
       setSimpsonsSort,
       resetFiltersType,
-
       deleteCharacter,
     },
     dispatch

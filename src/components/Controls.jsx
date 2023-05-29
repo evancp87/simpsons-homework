@@ -12,26 +12,20 @@ class Filters extends Component {
 
   searchSimpsonsInput = (e) => {
     console.log(e.target.value);
-    // this.props.setSimpsonsInput()
 
     this.props.setSimpsonsInput(e);
   };
 
   sortSimpsons = (e) => {
     console.log(e.target.value);
-    // this.props.setSimpsonsSort()
     this.props.setSimpsonsSort(e);
   };
 
   resetFilters = () => {
-    // const { sortInput, searchInput, simpsons } = this.state;
-    console.log("hi");
-
     this.props.resetFiltersType();
   };
 
   render() {
-    // const { sortSimpsons, searchSimpsonsInput, resetFilters } = this.props;
     return (
       <>
         <input type="text" onInput={this.searchSimpsonsInput} />

@@ -3,9 +3,6 @@ import Name from "./Name";
 import Quote from "./Quote";
 import Image from "./Image";
 import Delete from "./Delete";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { deleteCharacter } from "../store/actions/deleteTypes";
 
 class Character extends Component {
   state = {
@@ -24,17 +21,8 @@ class Character extends Component {
     });
   };
 
-  handleDelete = () => {
-    const { character } = this.props.item;
-    const { onDeleteChar } = this.props;
-    console.log(onDeleteChar);
-    const charToDelete = onDeleteChar(character);
-    this.props.deleteCharacter(charToDelete);
-  };
-
   render() {
-    const { character, quote, image, characterDirection, onDeleteChar } =
-      this.props.item;
+    const { character, quote, image, characterDirection } = this.props.item;
     const { like } = this.state;
     return (
       <div className="characterContainer">
@@ -46,26 +34,14 @@ class Character extends Component {
         <Quote quote={quote} characterDirection={characterDirection} />
         <Image image={image} like={like} />
 
-        <Delete character={character} onDeleteChar={this.handleDelete} />
+        <Delete
+          character={character}
+          //  onDeleteChar={this.handleDelete}
+          onDeleteChar={this.props.onDeleteChar}
+        />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    simpsons: state.apiReducer.simpsons,
-    deleteChar: state.deleteReducer.delete,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
-    {
-      deleteCharacter,
-    },
-    dispatch
-  );
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Character);
+export default Character;
