@@ -3,6 +3,8 @@ import Name from "./Name";
 import Quote from "./Quote";
 import Image from "./Image";
 import Delete from "./Delete";
+import { connect } from "react-redux";
+import { updateLikes } from "../store/actions/likesTypes";
 
 class Character extends Component {
   state = {
@@ -24,6 +26,7 @@ class Character extends Component {
   render() {
     const { character, quote, image, characterDirection } = this.props.item;
     const { like } = this.state;
+
     return (
       <div className="characterContainer">
         <Name
@@ -44,4 +47,10 @@ class Character extends Component {
   }
 }
 
-export default Character;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateLikes: (character) => dispatch(updateLikes(character)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Character);

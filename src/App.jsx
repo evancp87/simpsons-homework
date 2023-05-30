@@ -16,6 +16,11 @@ class App extends Component {
       const { data } = await axios.get(
         `https://thesimpsonsquoteapi.glitch.me/quotes?count=10`
       );
+
+      data.forEach((element, index) => {
+        element.id = index + Math.random();
+      });
+
       this.props.setSimpsonsData(data);
     } catch (error) {
       console.log("The error is:", error);
@@ -65,10 +70,16 @@ class App extends Component {
     if (simpsons.length === 0)
       return <p>Doh! You ran out of Springfieldians!</p>;
 
+    let total = 0;
+
+    simpsons.forEach((char) => {
+      if (char.liked) total++;
+    });
+
     return (
       <>
         {/* <h1>Total no of liked chars: {totalLikeCharacters}</h1> */}
-        <h1>Total no of liked chars: </h1>
+        <h1>Total no of liked chars: {total} </h1>
 
         <Simpsons />
       </>
@@ -79,6 +90,7 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     simpsons: state.apiReducer.simpsons,
+    likes: state.likesReducer.likes,
   };
 }
 
@@ -86,6 +98,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       setSimpsonsData,
+      setLikes,
     },
     dispatch
   );
