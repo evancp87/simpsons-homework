@@ -52,17 +52,9 @@ class Simpsons extends Component {
           sortInput={sortInput}
           resetFilters={resetFilters}
         />
+        {filteredSimpsonsData.length === 0 && <p>No results found, dude</p>}
         {filteredSimpsonsData.map((item, index) => {
-          return (
-            <Character
-              item={item}
-              key={item.quote}
-              onDeleteChar={this.onDeleteChar}
-
-              // likes={likes}
-              // updatedLikes={updatedLikes}
-            />
-          );
+          return <Character item={item} key={item.id} />;
         })}
       </>
     );
@@ -71,6 +63,7 @@ class Simpsons extends Component {
 
 function mapStateToProps(state) {
   const { sortInput, searchInput } = state.filtersReducer;
+
   return {
     sortInput,
     searchInput,

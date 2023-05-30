@@ -6,11 +6,8 @@ import "./App.css";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { setSimpsonsData } from "./store/actions/apiTypes";
-import { setLikes, updateLikes } from "./store/actions/likesTypes";
 
 class App extends Component {
-  // state = { likes: {} };
-
   async componentDidMount() {
     try {
       const { data } = await axios.get(
@@ -27,43 +24,8 @@ class App extends Component {
     }
   }
 
-  // onDeleteChar = (character) => {
-  //   const { simpsons, likes } = this.state;
-  //   const charToDelete = simpsons.findIndex(
-  //     (char) => char.character === character
-  //   );
-  //   const filteredData = simpsons.filter(
-  //     (char) => char !== simpsons[charToDelete]
-  //   );
-  //   const updatedLikes = { ...likes };
-
-  //   // handles updating the likes count when a character is deleted, checks to see if the like exist and then removes it and the character from state
-  //   if (updatedLikes.hasOwnProperty(character)) {
-  //     const { [character]: deletedCharacter, ...remainingLikes } = updatedLikes;
-  //     this.setState({ simpsons: filteredData, likes: remainingLikes });
-  //   } else {
-  //     this.setState({ simpsons: filteredData });
-  //   }
-  // };
-
-  // updatedLikes = (character) => {
-  //   const { likes } = this.state;
-
-  //   const newLikes = { ...likes };
-
-  //   // handles toggling of count based on like/unlike state
-  //   likes[character]
-  //     ? (newLikes[character] = (likes[character] || 0) + 1)
-  //     : (newLikes[character] = (likes[character] || 0) - 1);
-  //   this.setState({ likes: newLikes });
-  // };
-
   render() {
-    // const { simpsons, likes } = this.state;
     const { simpsons } = this.props;
-    // const totalLikeCharacters = Object.values(likes).filter(
-    //   (like) => like
-    // ).length;
 
     if (!simpsons) return <Loading />;
 
@@ -78,7 +40,6 @@ class App extends Component {
 
     return (
       <>
-        {/* <h1>Total no of liked chars: {totalLikeCharacters}</h1> */}
         <h1>Total no of liked chars: {total} </h1>
 
         <Simpsons />
@@ -90,7 +51,6 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     simpsons: state.apiReducer.simpsons,
-    likes: state.likesReducer.likes,
   };
 }
 
@@ -98,7 +58,6 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       setSimpsonsData,
-      setLikes,
     },
     dispatch
   );

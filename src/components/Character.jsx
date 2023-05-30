@@ -3,54 +3,26 @@ import Name from "./Name";
 import Quote from "./Quote";
 import Image from "./Image";
 import Delete from "./Delete";
-import { connect } from "react-redux";
-import { updateLikes } from "../store/actions/likesTypes";
 
 class Character extends Component {
   state = {
     like: false,
   };
 
-  onLikeToggle = () => {
-    const { character } = this.props.item;
-    // const { updatedLikes } = this.props;
-    // console.log("Character:", character);
-    // console.log("update likes:", updatedLikes);
-
-    // updatedLikes(character);
-    this.setState({
-      like: !this.state.like,
-    });
-  };
-
   render() {
-    const { character, quote, image, characterDirection } = this.props.item;
-    const { like } = this.state;
+    const { character, quote, image, characterDirection, id, liked } =
+      this.props.item;
 
     return (
       <div className="characterContainer">
-        <Name
-          character={character}
-          like={like}
-          onLikeToggle={this.onLikeToggle}
-        />
+        <Name character={character} liked={liked} id={id} />
         <Quote quote={quote} characterDirection={characterDirection} />
-        <Image image={image} like={like} />
+        <Image image={image} liked={liked} />
 
-        <Delete
-          character={character}
-          //  onDeleteChar={this.handleDelete}
-          onDeleteChar={this.props.onDeleteChar}
-        />
+        <Delete character={character} onDeleteChar={this.props.onDeleteChar} />
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateLikes: (character) => dispatch(updateLikes(character)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Character);
+export default Character;
