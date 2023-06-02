@@ -3,6 +3,7 @@ import Character from "./Character";
 import Controls from "./Controls";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import Nav from "./Nav";
 import {
   setSimpsonsInput,
   setSimpsonsSort,
@@ -47,6 +48,7 @@ class Simpsons extends Component {
 
     return (
       <>
+        {/* <Nav /> */}
         <Controls
           searchInput={searchInput}
           sortInput={sortInput}

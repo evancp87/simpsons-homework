@@ -6,12 +6,38 @@ import "./App.css";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { setSimpsonsData } from "./store/actions/apiTypes";
+import { Router, Routes, Route } from "react-router-dom";
+import About from "./components/About";
+import Error404 from "./components/Error404";
+import Nav from "./components/Nav";
+import Screen from "./components/Screen";
 
 class App extends Component {
+  state = {
+    showSplash: true,
+  };
+
+  // async componentDidMount() {
+  //   try {
+  //     const { data } = await axios.get(
+  //       `https://thesimpsonsquoteapi.glitch.me/quotes?count=10`
+  //     );
+
+  //     data.forEach((element, index) => {
+  //       element.id = index + Math.random();
+  //     });
+
+  //     this.props.setSimpsonsData(data);
+  //   } catch (error) {
+  //     console.log("The error is:", error);
+  //   }
+  // }
+
   async componentDidMount() {
     try {
+      // Simulate a delay to show the splash screen
       const { data } = await axios.get(
-        `https://thesimpsonsquoteapi.glitch.me/quotes?count=10`
+        "https://thesimpsonsquoteapi.glitch.me/quotes?count=10"
       );
 
       data.forEach((element, index) => {
@@ -19,6 +45,9 @@ class App extends Component {
       });
 
       this.props.setSimpsonsData(data);
+      setTimeout(() => {
+        this.setState({ showSplash: false });
+      }, 3000); // Adjust the delay as per your preference
     } catch (error) {
       console.log("The error is:", error);
     }
@@ -40,9 +69,20 @@ class App extends Component {
 
     return (
       <>
-        <h1>Total no of liked chars: {total} </h1>
-
-        <Simpsons />
+        {this.state.showSplash ? (
+          <Screen />
+        ) : (
+          <>
+            <h1>Total no of liked chars: {total} </h1>
+            <Nav />
+            <Routes>
+              <Route path="/" element={<Simpsons />} />
+              <Route path="/about" element={<About />} />
+              {/* <Route path="/splash-screen" element={<Screen />} /> */}
+              <Route path="*" element={<Error404 />} />
+            </Routes>
+          </>
+        )}
       </>
     );
   }

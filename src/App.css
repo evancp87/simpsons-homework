@@ -30,3 +30,50 @@ body {
 
   order: 1;
 }
+
+
+.nav {
+  display: flex;
+justify-content: center;
+
+}
+
+.nav-list {
+  display: flex;
+  justify-content: space-evenly;
+  background: cadetblue;
+  border-radius: 10px;
+  max-width: 100%;
+  width: 100%;
+}
+
+li {
+list-style: none;
+margin: 0.2rem;
+}
+
+/* Splash screen animation */
+.container {
+  display: flex;
+  justify-content: center;
+}
+.splash-screen {
+
+  animation: pulse 1s infinite ease-in-out;
+}
+@keyframes pulse {
+
+  0% {
+opacity: 1
+  } 
+
+  50% {
+opacity: 0.1
+    
+  }
+
+  100% {
+opacity: 1
+    
+  }
+}
