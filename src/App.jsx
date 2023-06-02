@@ -17,25 +17,8 @@ class App extends Component {
     showSplash: true,
   };
 
-  // async componentDidMount() {
-  //   try {
-  //     const { data } = await axios.get(
-  //       `https://thesimpsonsquoteapi.glitch.me/quotes?count=10`
-  //     );
-
-  //     data.forEach((element, index) => {
-  //       element.id = index + Math.random();
-  //     });
-
-  //     this.props.setSimpsonsData(data);
-  //   } catch (error) {
-  //     console.log("The error is:", error);
-  //   }
-  // }
-
   async componentDidMount() {
     try {
-      // Simulate a delay to show the splash screen
       const { data } = await axios.get(
         "https://thesimpsonsquoteapi.glitch.me/quotes?count=10"
       );
@@ -47,7 +30,7 @@ class App extends Component {
       this.props.setSimpsonsData(data);
       setTimeout(() => {
         this.setState({ showSplash: false });
-      }, 3000); // Adjust the delay as per your preference
+      }, 3000);
     } catch (error) {
       console.log("The error is:", error);
     }
@@ -78,7 +61,6 @@ class App extends Component {
             <Routes>
               <Route path="/" element={<Simpsons />} />
               <Route path="/about" element={<About />} />
-              {/* <Route path="/splash-screen" element={<Screen />} /> */}
               <Route path="*" element={<Error404 />} />
             </Routes>
           </>
